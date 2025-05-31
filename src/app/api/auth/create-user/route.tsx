@@ -33,6 +33,14 @@ export async function POST(req: Request) {
             },
         }),
     })
+
+    const checkEmail = await fetch(`${process.env.ABSTRACT_API_KEY}${encodeURIComponent(body.email)}`);
+    const emailData = await checkEmail.json();
+
+    if (!emailData.is_valid_format.value || !emailData.is_smtp_valid.value || emailData.is_disposable_email.value) {
+        return NextResponse.json({ error: 'Invalid or undeliverable email' }, { status: 400 });
+    }
+    
     if (!createRes.ok) {
         const error = await createRes.json();
         return NextResponse.json({ error }, { status: 400 });

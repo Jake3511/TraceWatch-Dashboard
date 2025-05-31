@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { useUser } from "@auth0/nextjs-auth0"
 
 interface SignUpComponentProps {
     toggleForm: () => void;
@@ -37,7 +36,7 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm}) => {
         <>
             <div className="h-screen w-screen flex items-center justify-center">
                 <div className="w-full max-w-[320px] md:max-w-[400px] p-4 border border-white rounded-lg bg-opacity-0 backdrop-blur-xs">
-                    <h1 className="text-white text-center font-bold">Login</h1>
+                    <h1 className="text-white text-center font-bold">Sign Up</h1>
                     <div>
                     <p className="text-white mb-3 ml-1 text-sm">First Name</p>
                         <input 
