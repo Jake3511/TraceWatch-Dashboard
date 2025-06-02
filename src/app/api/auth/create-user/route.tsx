@@ -40,12 +40,13 @@ export async function POST(req: Request) {
     if (!emailData.is_valid_format.value || !emailData.is_smtp_valid.value || emailData.is_disposable_email.value) {
         return NextResponse.json({ error: 'Invalid or undeliverable email' }, { status: 400 });
     }
-    
+
     if (!createRes.ok) {
         const error = await createRes.json();
         return NextResponse.json({ error }, { status: 400 });
     }
 
     const user = await createRes.json();
+    console.log(user);
     return NextResponse.json(user);
 }

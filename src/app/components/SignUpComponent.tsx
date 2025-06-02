@@ -22,16 +22,41 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm}) => {
                 lastName,
             }),
         })
+
         const data = await res.json();
-        console.log(data);
 
         if(res.ok) {
             alert("All good");
+            storeUserInfo(data.user_id);
         }
         else {
             alert(`Error: ${data.error?.message || 'Signup failed'}`);
         }
     }
+
+    const storeUserInfo = async (auth0id: string) => {
+        const res = await fetch ("../api/store-api-key", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                auth0id,
+                email,
+                firstName,
+                lastName
+            })
+        })
+        
+        const data = await res.json();
+
+        if (res.ok) {
+
+        }
+
+        else {
+            alert(`Error: ${data.error?.message || 'Storing User info failed'}`)
+        }
+    }
+    
     return (
         <>
             <div className="h-screen w-screen flex items-center justify-center">
