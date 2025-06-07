@@ -26,7 +26,6 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm}) => {
         const data = await res.json();
 
         if(res.ok) {
-            alert("All good");
             storeUserInfo(data.user_id);
         }
         else {
@@ -35,7 +34,7 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm}) => {
     }
 
     const storeUserInfo = async (auth0id: string) => {
-        const res = await fetch ("../api/store-api-key", {
+        const res = await fetch ("../api/store-user-info", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -49,7 +48,7 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm}) => {
         const data = await res.json();
 
         if (res.ok) {
-
+            alert("API KEY VALID");
         }
 
         else {
