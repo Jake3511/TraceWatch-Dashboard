@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool } from "@/lib/db";
 import bcrypt from "bcrypt"
-import { randomBytes } from "crypto"; 
+import { randomBytes } from "crypto";
 
 export async function POST(req: NextRequest) {
     try {
