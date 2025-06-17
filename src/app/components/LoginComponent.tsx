@@ -40,7 +40,7 @@ const LoginComponent: React.FC<LoginComponentProps> = ({toggleForm}) => {
                             placeholder="Email"
                             type="email"
                             value={email ?? ''}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                             >
                             </input>
                             
@@ -50,7 +50,7 @@ const LoginComponent: React.FC<LoginComponentProps> = ({toggleForm}) => {
                             placeholder="Password"
                             type="password"
                             value={password ?? ''}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                             >
                         </input>
                         <button className="w-full px-4 py-3 mt-4 text-sm font-semibold text-white bg-[#2F2F2F] rounded-md transition-transform 
