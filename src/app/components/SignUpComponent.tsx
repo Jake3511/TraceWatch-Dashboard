@@ -122,7 +122,7 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm}) => {
                         </button>
 
                         <p className="mt-3 text-[10px] text-center text-white">
-                            By continuing, you agree to TraceWatch's <br />
+                            By continuing, you agree to TraceWatch&apos;s <br />
                             <span className="underline cursor-pointer">Terms of Service</span> and acknowledge you’ve read <br />
                             our <span className="underline cursor-pointer">Privacy Policy</span>. Notice at collection.
                         </p>

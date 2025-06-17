@@ -27,8 +27,13 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ success: true, userId: result.rows[0].id, apiKey });
     } 
-    catch (err: any) {
+    catch (err: unknown) {
         console.log("Error storing API keys or saving user info", err);
-        return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 500 });
+    
+        if (err instanceof Error) {
+            return NextResponse.json({ error: err.message }, { status: 500 });
+        }
+    
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

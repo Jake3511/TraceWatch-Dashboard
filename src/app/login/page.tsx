@@ -1,5 +1,5 @@
 'use client'
-import React, {useState, useRef} from "react"
+import React, {useState} from "react"
 import LoginComponent from "../components/LoginComponent"
 import SignUpComponent from "../components/SignUpComponent"
 import Image from 'next/image'
