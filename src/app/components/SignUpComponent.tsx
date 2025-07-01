@@ -2,9 +2,10 @@ import React, { useState } from "react"
 
 interface SignUpComponentProps {
     toggleForm: () => void;
+    setIsRegistering: React.Dispatch<React.SetStateAction<boolean | null>>
 }
 
-const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm}) => {
+const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm, setIsRegistering}) => {
     const [firstName, setFirstName] = useState <string | null>(null)
     const [lastName, setLastName] = useState <string | null>(null)
     const [email, setEmail] = useState <string | null>(null)
@@ -23,6 +24,11 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm}) => {
             }),
         })
 
+        if (password !== password2) {
+            alert("These passwords do not match!");
+            return;
+        }
+        
         const data = await res.json();
 
         if(res.ok) {
@@ -49,6 +55,7 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm}) => {
 
         if (res.ok) {
             alert("API KEY VALID");
+            setIsRegistering(false)
         }
 
         else {

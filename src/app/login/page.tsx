@@ -8,6 +8,7 @@ import background from "../assets/TraceWatch_Login.png"
 const Login: React.FC = () => {
     const [isRegistering, setIsRegistering] = useState<boolean | null>(null);
     const toggleForm = () => setIsRegistering((prev) => !prev);
+    
     return (
     <>
         <div 
@@ -22,7 +23,7 @@ const Login: React.FC = () => {
             <div className="absolute top-0 left-0 p-6">
                 <h1 className="text-4xl text-red-500 font-bold">Tracewatch</h1>
             </div>
-            {isRegistering ? <SignUpComponent toggleForm={toggleForm} /> : <LoginComponent toggleForm={toggleForm} />}
+            {isRegistering ? <SignUpComponent toggleForm={toggleForm} setIsRegistering={setIsRegistering} /> : <LoginComponent toggleForm={toggleForm} />}
         </div>
     </>
 )}

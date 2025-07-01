@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react"
+import React, { useState, useEffect} from "react"
 
 interface LoginComponentProps {
     toggleForm: () => void;
@@ -23,11 +23,24 @@ const LoginComponent: React.FC<LoginComponentProps> = ({toggleForm}) => {
 
         if (res.ok) {
             alert("ALL GOOD");
+            test();
         }
         else {
             alert(`Error: ${data.error?.message}`);
         }
     }
+
+    const test = async () => {
+        const res = await fetch('/api/store-user-data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = res.json();
+        console.log(data);
+    }
+
     return (
         <>
             <div className="h-screen w-screen flex items-center justify-center">
