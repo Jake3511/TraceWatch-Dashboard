@@ -44,8 +44,8 @@ export async function POST(req: NextRequest) {
         if (error instanceof Error) {
             console.error("Caught error:", error.message);
             console.error("Stack:", error.stack);
-        }
-        else {
+            return NextResponse.json({ error: error.message }, { status: 400 }); // 🔥 THIS was missing
+        } else {
             console.error("Unknown error:", error);
             return NextResponse.json({ error: 'Unexpected error occurred' }, { status: 400 });
         }
