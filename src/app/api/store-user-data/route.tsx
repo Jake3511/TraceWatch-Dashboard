@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         }, { status: res.status});
 
     } catch (error: unknown) {
-        if(error instanceof Error) {
+        if (error instanceof Error) {
             console.error("Caught error:", error.message);
             console.error("Stack:", error.stack);
         }
