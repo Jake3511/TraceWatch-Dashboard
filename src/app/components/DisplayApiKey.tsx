@@ -11,7 +11,7 @@ const DisplayApiKey: React.FC = () => {
     
     return (
     <>
-        <h1>To return to login page please copy and paste you're Api key to a secure location.</h1>
+        <h1>To return to login page please copy and paste your Api key to a secure location.</h1>
     </>
 )}
 
