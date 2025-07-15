@@ -7,10 +7,11 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { metric, apiKey, data } = body;
         
-        if (apiKey != "") {
+        if (!apiKey) {
             return NextResponse.json({ error: 'API key is required' }, { status: 401 });
         }
 
+        console.log("Made it 1");
         const result = await pool.query('SELECT api_key_hash FROM users');
 
         const valid = result.rows.some(row => 
@@ -20,6 +21,8 @@ export async function POST(req: NextRequest) {
         if (!valid) {
             return NextResponse.json({ error: 'No valid API key was entered' }, { status: 401 });
         }
+
+        console.log("Made it 2");
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/metrics/${metric}`, {
             method: "POST",
@@ -37,8 +40,14 @@ export async function POST(req: NextRequest) {
             response: responseData,
         }, { status: res.status});
 
-    } catch (error) {
-        console.error("Error parsing JSON body:", error);
-        return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+    } catch (error: unknown) {
+        if(error instanceof Error) {
+            console.error("Caught error:", error.message);
+            console.error("Stack:", error.stack);
+        }
+        else {
+            console.error("Unknown error:", error);
+            return NextResponse.json({ error: 'Unexpected error occurred' }, { status: 400 });
+        }
     }
 }
