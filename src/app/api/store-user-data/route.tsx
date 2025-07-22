@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
         console.log("Made it 2");
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/metrics/${metric}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/app/api/metrics/${metric}`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
