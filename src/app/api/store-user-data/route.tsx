@@ -14,9 +14,10 @@ export async function POST(req: NextRequest) {
         console.log("Made it 1");
         const result = await pool.query('SELECT api_key_hash FROM users');
 
-        const valid = result.rows.some(row => 
-            bcrypt.compareSync(apiKey, row.api_key_hash)
-        );
+        const valid = result.rows.some(row => {
+            console.log(row.api_key_hash);
+            return apiKey === row.api_key_hash;
+        });
 
         if (!valid) {
             return NextResponse.json({ error: 'No valid API key was entered' }, { status: 401 });
