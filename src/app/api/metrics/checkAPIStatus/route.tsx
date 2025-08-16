@@ -26,12 +26,12 @@ export async function POST(req: NextResponse) {
     return NextResponse.json({ message: 'Data received successfully' }, { status: 200 });
 }
 
-export async function GET(req: NextResponse) {
-    try {
+// export async function GET(req: NextResponse) {
+//     try {
 
-    }
+//     }
 
-    catch (error: unknown) {
+//     catch (error: unknown) {
 
-    }
-}
+//     }
+// }
