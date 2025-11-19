@@ -4,15 +4,19 @@ import { pool } from "@/lib/db";
 export async function POST(req: NextResponse) {
     try {
         const body = await req.json();
-        const {metric_name, service, auth0_id, data, timestamp} = body;
+        const {metric_name, service, apiKey, data, timestamp} = body ?? {};
+
+        if(!metric_name || !service || !apiKey || !data || !timestamp)
+            throw new Error("Missing one of the fields, checkAPIStatus takes five arguments")
+
         const queryText = 
         `INSERT INTO metrics (metric, service, apiKey, data, timestamp)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING id;
         `;
-        const values = [metric_name, service, auth0_id, data, timestamp];
+        const values = [metric_name, service, apiKey, data, timestamp];
         const result = await pool.query(queryText, values);
-
+        console.log(result)
 
     }
     catch (error: unknown) {
@@ -23,15 +27,4 @@ export async function POST(req: NextResponse) {
             return NextResponse.json({message: "Data could not be sent for unknown reason"});
         }
     }
-    return NextResponse.json({ message: 'Data received successfully' }, { status: 200 });
 }
-
-// export async function GET(req: NextResponse) {
-//     try {
-
-//     }
-
-//     catch (error: unknown) {
-
-//     }
-// }

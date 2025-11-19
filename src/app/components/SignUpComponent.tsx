@@ -1,11 +1,16 @@
 import React, { useState } from "react"
 
+/*
+    interface allows you to 
+*/
 interface SignUpComponentProps {
     toggleForm: () => void;
     setIsRegistering: React.Dispatch<React.SetStateAction<boolean | null>>
 }
 
+// function used for signing up via auth0 takes in the form and if the user is registring
 const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm, setIsRegistering}) => {
+    // values used for creating a new user
     const [firstName, setFirstName] = useState <string | null>(null)
     const [lastName, setLastName] = useState <string | null>(null)
     const [email, setEmail] = useState <string | null>(null)
@@ -13,6 +18,14 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm, setIsRegis
     const [password2, setPassword2] = useState <string | null>(null)
 
     const handleSignUp = async () => {
+
+        // checks to see if passwords are equal and if not, send alert and return function
+        if (password !== password2) { 
+            alert("These passwords do not match!");
+            return;
+        }
+
+        // this will make a post request to the next.js server which passes a json object containing the email, password, first name and last name of user
         const res = await fetch ("../api/auth/create-user", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -23,12 +36,8 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({toggleForm, setIsRegis
                 lastName,
             }),
         })
-
-        if (password !== password2) {
-            alert("These passwords do not match!");
-            return;
-        }
         
+        // here, data will be intialized as the 
         const data = await res.json();
 
         if(res.ok) {

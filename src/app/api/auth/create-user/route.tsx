@@ -34,7 +34,7 @@ export async function POST(req: Request) {
         }),
     })
 
-    const checkEmail = await fetch(`${process.env.ABSTRACT_API_KEY}${encodeURIComponent(body.email)}`); // uses abstract in order to check if an email is valid
+    const checkEmail = await fetch(`${process.env.ABSTRACT_API_KEY}${encodeURIComponent(body.email)}`); // uses abstract(API) in order to check if an email is valid
     const emailData = await checkEmail.json(); // gets the email and converts it into an object
 
     if (!emailData.is_valid_format.value || !emailData.is_smtp_valid.value || emailData.is_disposable_email.value) { // reads values to confirm if email is valid
