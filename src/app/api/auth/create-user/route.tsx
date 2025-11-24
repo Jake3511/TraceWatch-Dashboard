@@ -1,52 +1,42 @@
 import { NextResponse } from "next/server";
+import { createUserService } from "@/lib/userService"
+import bcrypt from "bcrypt";
+import { randomBytes } from "crypto";
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<NextResponse> {
     const body = await req.json();
 
-    const tokenRes = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, { // creates token to confirm application/server has correct permissions
-        method: 'POST', // defines http method as type POST
-        headers: { 'Content-Type': 'application/json' }, // defines the type of response we will send to AUTH0
-        body: JSON.stringify({ // turn content into json object
-            client_id: process.env.AUTH0_CLINET_ID,
-            client_secret: process.env.AUTH0_CLIENT_SECRET,
-            audience: process.env.AUTH0_AUDIENCE,
-            grant_type: 'client_credentials',
-        }),
-    })
+    // Generate a fresh API key for the user. This is the only time the plain value is ever exposed.
+    const apiKey = randomBytes(32).toString("hex");
 
-    const { access_token } = await tokenRes.json(); // used to confirm that user has now obtained correct permissions
+    // Hash the API key before storing it so we never keep the raw value in the DB.
+    const saltRounds = 10;
+    const hashedApiKey = await bcrypt.hash(apiKey, saltRounds);
 
-    const createRes = await fetch (`${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users`, { // gets the users api so that we can create a new user
-        method: 'POST', // defines http method
-        headers: {
-            Authorization: `Bearer ${access_token}`, // confirms user has correct auth0 credentials
-            'Content-Type': 'application/json',
-        },
-
-        body: JSON.stringify({ // will post the email, password, connection, and metadata to auth0 database.
+    try {
+        // Create the user record and save the hashed API key along with their other info.
+        const user = await createUserService({
             email: body.email,
             password: body.password,
-            connection: "Username-Password-Authentication",
-            user_metadata: {
-                firstName: body.firstName,
-                lastName: body.lastName,
-            },
-        }),
-    })
+            firstName: body.firstName,
+            lastName: body.lastName,
+            hashedApiKey: hashedApiKey,
+        });
 
-    const checkEmail = await fetch(`${process.env.ABSTRACT_API_KEY}${encodeURIComponent(body.email)}`); // uses abstract(API) in order to check if an email is valid
-    const emailData = await checkEmail.json(); // gets the email and converts it into an object
+        // Send the plain API key back to the client once so they can copy/store it.
+        return NextResponse.json(
+            { apiKey },
+            { status: 201 }
+        );
 
-    if (!emailData.is_valid_format.value || !emailData.is_smtp_valid.value || emailData.is_disposable_email.value) { // reads values to confirm if email is valid
-        return NextResponse.json({ error: 'Invalid or undeliverable email' }, { status: 400 });
+    } catch (err) {
+        // Helpful for debugging—logs the actual error to the server console.
+        console.error("createUserService error:", err);
+
+        // Client gets a cleaner error message.
+        return NextResponse.json(
+          { error: err instanceof Error ? err.message : "Unknown error" },
+          { status: 400 }
+        );
     }
-
-    if (!createRes.ok) { 
-        const error = await createRes.json();
-        return NextResponse.json({ error }, { status: 400 });
-    }
-
-    const user = await createRes.json();
-    console.log(user);
-    return NextResponse.json(user);
 }

@@ -1,7 +1,15 @@
-import React from "react"
+import MetricCard from "./MetricCard";
 
 const CheckAPIStatus: React.FC = () => {
-    return <h1 className="text-4xl font-bold bg-red-500 text-blue-100">Hello World</h1>
-}
+  const status = "OK"; // later this will be dynamic
+
+  return (
+    <div className="pt-8">
+        <MetricCard title="API Status">
+        {status}
+        </MetricCard>
+    </div>
+  );
+};
 
 export default CheckAPIStatus;

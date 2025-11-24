@@ -1,7 +1,15 @@
-import React from "react"
+import MetricCard from "./MetricCard";
 
 const GetAPILatency: React.FC = () => {
-    return <h1>Hello World</h1>
-}
+  const status = "OK"; // later this will be dynamic
+
+  return (
+    <div className="pt-8">
+        <MetricCard title="API Latency">
+        {status}
+        </MetricCard>
+    </div>
+  );
+};
 
 export default GetAPILatency;

@@ -1,13 +1,16 @@
 'use client'
-import React, { useState} from "react"
+import React, { useState } from "react"
+import { useRouter } from "next/navigation"
 
 interface LoginComponentProps {
     toggleForm: () => void;
 }
-
+// "React.FC<LoginComponentProps>" tells typescript that the Login Component expects a toggleForm as a prop
 const LoginComponent: React.FC<LoginComponentProps> = ({toggleForm}) => {
     const [email, setEmail] = useState <string | null>(null)
     const [password, setPassword] = useState<string | null>(null)
+    const [error, setError] = useState<string | null>(null);
+    const router = useRouter();
 
     const handleLogin = async () => {
         const res = await fetch('/api/auth/read-user', {
@@ -22,30 +25,18 @@ const LoginComponent: React.FC<LoginComponentProps> = ({toggleForm}) => {
         console.log(data);
 
         if (res.ok) {
-            alert("ALL GOOD");
-            test();
+            router.push("../home")
         }
         else {
-            alert(`Error: ${data.error?.message}`);
+            setError(data.Error || "Invalid Login" )
         }
-    }
-
-    const test = async () => {
-        const res = await fetch('/api/store-user-data', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({ email, password })
-        });
-
-        const data = res.json();
-        console.log(data);
     }
 
     return (
         <>
             <div className="h-screen w-screen flex items-center justify-center">
-                <div className="w-full max-w-[320px] md:max-w-[400px] p-4 border border-white rounded-lg bg-opacity-0 backdrop-blur-xs">
-                    <h1 className="text-white text-center font-bold">Login</h1>
+                <div className="w-full max-w-[320px] md:max-w-[400px] p-4 border border-slate-900 rounded-lg bg-opacity-0 backdrop-blur-xs">
+                    <h1 className="text-slate-900 text-center font-bold">Login</h1>
                     <div>
                         <p className="text-white mb-3 ml-1 text-sm">Email</p>
                         <input 
@@ -55,8 +46,12 @@ const LoginComponent: React.FC<LoginComponentProps> = ({toggleForm}) => {
                             value={email ?? ''}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                             >
-                            </input>
-                            
+                        </input>
+                        {error && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {error}
+                            </p>
+                        )}
                         <p className="text-white mb-3 ml-1 text-sm">Password</p>
                         <input 
                             className="w-full px-3 py-2 mb-3 text-black bg-white rounded-md focus:outline-none font-medium border border-gray-300" 
@@ -79,7 +74,7 @@ const LoginComponent: React.FC<LoginComponentProps> = ({toggleForm}) => {
                             Sign Up
                         </button>
 
-                        <p className="mt-3 text-[10px] text-center text-white">
+                        <p className="mt-3 text-[10px] text-center text-slate-900">
                             By continuing, you agree to TraceWatch&apos;s <br />
                             <span className="underline cursor-pointer">Terms of Service</span> and acknowledge you’ve read <br />
                             our <span className="underline cursor-pointer">Privacy Policy</span>. Notice at collection.

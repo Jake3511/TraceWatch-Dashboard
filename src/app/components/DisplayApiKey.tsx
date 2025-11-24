@@ -1,18 +1,21 @@
 'use client'
-import React from 'react'
-// import React, {useState, useEffect} from 'react'
+import React from "react";
 
-const DisplayApiKey: React.FC = () => {
-//     const [apiKey, setApiKey] = useState<string | null>(null);
+interface DisplayApiKeyProps {
+  apiKey: string;
+}
 
-//     const handleApiKey = async () => {
-//         const res = await fetch('/api/auth/')
-//     }
-    
-    return (
-    <>
-        <h1>To return to login page please copy and paste your Api key to a secure location.</h1>
-    </>
-)}
+const DisplayApiKey: React.FC<DisplayApiKeyProps> = ({ apiKey }) => {
+  return (
+    <div className="p-4 border rounded-lg bg-white">
+      <h1 className="font-semibold mb-2">
+        To return to login page please copy and paste your API key to a secure location, and click the icon above.
+      </h1>
+      <p className="font-mono break-all bg-gray-100 p-2 rounded">
+        {apiKey}
+      </p>
+    </div>
+  );
+};
 
 export default DisplayApiKey;

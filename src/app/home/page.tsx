@@ -1,16 +1,23 @@
+'use client'
 import React from "react"
-import CheckAPIStatus from "../components/CheckAPIStatus";
-import GetAPILatency from "../components/GetAPILatency";
-import GetCPUUsage from "../components/GetCPUUsage";
+import Header from "@/app/components/Header"
+import DashboardIntroCard from "@/app/components/dashboard";
+import CheckAPIStatus from "@/app/components/CheckAPIStatus";
+import GetAPILatency from "@/app/components/GetAPILatency";
+import GetCPUUsage from "@/app/components/GetCPUUsage";
 
 const Home: React.FC = () => {
     return (
-    <>
-        <h1 className="text-4xl text-red-500 font-bold">Tailwind is working!</h1>;
-        <CheckAPIStatus />
-        <GetAPILatency />
-        <GetCPUUsage />
-    </>
-)}
+        <>
+            <Header />
+            <DashboardIntroCard />
+            <div className="grid grid-cols-3 gap-6">
+                <CheckAPIStatus />
+                <GetAPILatency />
+                <GetCPUUsage />
+            </div>
+        </>
+    );
+};
 
 export default Home;
